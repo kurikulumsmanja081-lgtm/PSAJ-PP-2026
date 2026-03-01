@@ -1,0 +1,1327 @@
+<!DOCTYPE html>
+<html lang="id" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ujian Online SMAN 1 PAMIJAHAN</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e40af 0%, #3b82f6 50%, #60a5fa 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .timer-pulse {
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body class="h-full gradient-bg">
+    <!-- Header -->
+    <header class="bg-white shadow-lg">
+        <div class="px-4 py-3">
+            <div class="flex items-center justify-center space-x-3">
+                <img src="https://iili.io/KUDFHtj.md.png" alt="KUDFHtj.md.png" style="width:55px; height:55px;">
+                <div class="text-center">
+                    <h1 class="text-lg font-bold text-blue-1800">UJIAN ONLINE PSAJ 2026</h1>
+                    <p class="text-sm text-blue-1400 font-large">SMAN 1 PAMIJAHAN</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 px-4 py-6">
+        <!-- Login Page -->
+        <div id="loginPage" class="max-w-md mx-auto">
+            <div class="glass-effect rounded-2xl shadow-xl p-6">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-2">Masuk Ujian</h2>
+                    <p class="text-gray-600">Silakan Masukkan Data Anda</p>
+                </div>
+
+                <form id="loginForm" class="space-y-4">
+                    <div>
+                        <label for="studentName" class="block text-sm font-medium text-gray-700 mb-2">Nama Siswa</label>
+                        <input type="text" id="studentName" name="studentName" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <div>
+                        <label for="studentClass" class="block text-sm font-medium text-gray-700 mb-2">Kelas</label>
+                        <select id="studentClass" name="studentClass" required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                            <option value="">Pilih Kelas</option>
+                            <option value="XII-1">XII-1</option>
+                            <option value="XII-2">XII-2</option>
+                            <option value="XII-3">XII-3</option>
+                            <option value="XII-4">XII-4</option>
+                            <option value="XII-5">XII-5</option>
+                            <option value="XII-6">XII-6</option>
+                            <option value="XII-7">XII-7</option>
+                            <option value="XII-8">XII-8</option>
+                            <option value="XII-9">XII-9</option>
+                            <option value="GURU">GURU</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                        <input type="password" id="password" name="password" required 
+                               class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+
+                    <button type="submit" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200 transform hover:scale-105">
+                        Masuk
+                    </button>
+                </form>
+
+                <div class="mt-4 text-center">
+                    <button id="adminBtn" class="text-blue-600 hover:text-blue-800 text-sm font-medium">
+                        🔐 Admin Panel
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Page -->
+        <div id="mainPage" class="hidden max-w-md mx-auto">
+            <div class="glass-effect rounded-2xl shadow-xl p-6 mb-4">
+                <div class="text-center mb-6">
+                    <h2 class="text-xl font-bold text-blue-800 mb-2">Selamat datang di</h2>
+                    <h3 class="text-lg font-semibold text-blue-700">Ujian Online SMAN 1 PAMIJAHAN</h3>
+                    <h4 class="text-md font-medium text-blue-600">MAPEL PENDIDIKAN PANCASILA</h4>
+                    <p id="welcomeText" class="text-gray-600 mt-2"></p>
+                </div>
+
+                <!-- Timer -->
+                <div class="bg-blue-50 rounded-lg p-4 mb-6 text-center">
+                    <p class="text-sm text-gray-600 mb-1">Waktu Ujian</p>
+                    <div id="timer" class="text-2xl font-bold text-blue-800 timer-pulse">90:00</div>
+                    <p class="text-xs text-gray-500 mt-1">Durasi: 90 menit</p>
+                </div>
+
+                <button id="startExamBtn" 
+                        class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-4 px-4 rounded-lg transition duration-200 transform hover:scale-105 mb-4">
+                    📝 Mulai Ujian
+                </button>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button id="finishExamBtn" class="hidden bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-3 rounded-lg text-sm">
+                        Selesai Ujian
+                    </button>
+                    <button id="logoutBtn" class="bg-gray-500 hover:bg-gray-600 text-white font-medium py-2 px-3 rounded-lg text-sm">
+                        Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Exam Page -->
+        <div id="examPage" class="hidden">
+            <div class="bg-white rounded-lg shadow-lg p-4 mb-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="font-bold text-blue-800">Ujian Berlangsung</h3>
+                    <div id="examTimer" class="text-lg font-bold text-red-600">90:00</div>
+                </div>
+                
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-3 mb-4">
+                    <p class="text-sm text-yellow-800">⚠️ Jangan keluar dari halaman ini selama ujian berlangsung!</p>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <iframe id="examFrame" 
+                        src="https://docs.google.com/forms/d/e/1FAIpQLSec6E7N1VEh3jBoZzfP5fCVfElzKyJrw57h_SPFqrTC-tO_gw/viewform?usp=dialog" 
+                        width="100%" 
+                        height="600" 
+                        frameborder="0" 
+                        marginheight="0" 
+                        marginwidth="0">
+                    Memuat soal ujian...
+                </iframe>
+            </div>
+
+            <div class="mt-4 text-center">
+                <button id="submitExamBtn" 
+                        class="bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-6 rounded-lg">
+                    Selesai Ujian
+                </button>
+            </div>
+        </div>
+
+        <!-- Admin Panel -->
+        <div id="adminPage" class="hidden max-w-md mx-auto">
+            <div class="glass-effect rounded-2xl shadow-xl p-6">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-bold text-blue-800 mb-2">Admin Panel</h2>
+                    <p class="text-gray-600">Panel Kontrol Administrator</p>
+                </div>
+
+                <div class="space-y-4">
+                    <button id="viewStudentActivityBtn" 
+                            class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        👥 Aktivitas Siswa
+                    </button>
+
+                    <button id="viewStudentStatsBtn" 
+                            class="w-full bg-teal-600 hover:bg-teal-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        📈 Statistik Siswa
+                    </button>
+
+                    <button id="viewBannedStudentsBtn" 
+                            class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        🚫 Siswa Dikeluarkan
+                    </button>
+
+                    <button id="viewResultsBtn" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        📊 Lihat Hasil Ujian
+                    </button>
+
+                    <button id="editQuestionsBtn" 
+                            class="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        📝 Edit Soal
+                    </button>
+
+                    <button id="editStudentsBtn" 
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        👥 Edit Data Siswa
+                    </button>
+
+                    <button id="changePasswordBtn" 
+                            class="w-full bg-orange-600 hover:bg-orange-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        🔐 Ganti Password Admin
+                    </button>
+
+                    <button id="backToLoginBtn" 
+                            class="w-full bg-gray-500 hover:bg-gray-600 text-white font-semibold py-3 px-4 rounded-lg transition duration-200">
+                        ← Kembali
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Login Modal -->
+        <div id="adminLoginModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <h3 class="text-lg font-bold text-blue-800 mb-4 text-center">🔐 Login Admin</h3>
+                
+                <form id="adminLoginForm" class="space-y-4">
+                    <div>
+                        <label for="adminUsername" class="block text-sm font-medium text-gray-700 mb-2">Username Admin</label>
+                        <input type="text" id="adminUsername" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label for="adminPassword" class="block text-sm font-medium text-gray-700 mb-2">Password Admin</label>
+                        <input type="password" id="adminPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
+                            Masuk
+                        </button>
+                        <button type="button" id="cancelAdminLoginBtn" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div id="changePasswordModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <h3 class="text-lg font-bold text-blue-800 mb-4 text-center">Ganti Password Admin</h3>
+                
+                <form id="changePasswordForm" class="space-y-4">
+                    <div>
+                        <label for="currentPassword" class="block text-sm font-medium text-gray-700 mb-2">Password Saat Ini</label>
+                        <input type="password" id="currentPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label for="newPassword" class="block text-sm font-medium text-gray-700 mb-2">Password Baru</label>
+                        <input type="password" id="newPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div>
+                        <label for="confirmPassword" class="block text-sm font-medium text-gray-700 mb-2">Konfirmasi Password Baru</label>
+                        <input type="password" id="confirmPassword" required 
+                               class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex space-x-3">
+                        <button type="submit" class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
+                            Simpan
+                        </button>
+                        <button type="button" id="cancelPasswordBtn" class="flex-1 bg-gray-500 hover:bg-gray-600 text-white font-semibold py-2 px-4 rounded-lg">
+                            Batal
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Student Activity Modal -->
+        <div id="studentActivityModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-2xl w-full max-h-96 overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-blue-800">👥 Aktivitas Siswa</h3>
+                    <button id="closeActivityBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">×</button>
+                </div>
+                
+                <div id="activityContent" class="space-y-3">
+                    <!-- Activity content will be populated here -->
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <button id="clearActivityBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg text-sm">
+                        Hapus Semua Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Student Statistics Modal -->
+        <div id="studentStatsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-3xl w-full max-h-96 overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-blue-800">📈 Statistik Siswa</h3>
+                    <button id="closeStatsBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">×</button>
+                </div>
+                
+                <div id="statsContent" class="space-y-4">
+                    <!-- Statistics content will be populated here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Banned Students Modal -->
+        <div id="bannedStudentsModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-2xl w-full max-h-96 overflow-y-auto">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-lg font-bold text-red-800">🚫 Siswa Dikeluarkan</h3>
+                    <button id="closeBannedBtn" class="text-gray-500 hover:text-gray-700 text-xl font-bold">×</button>
+                </div>
+                
+                <div id="bannedContent" class="space-y-3">
+                    <!-- Banned students content will be populated here -->
+                </div>
+                
+                <div class="mt-4 text-center">
+                    <button id="clearBannedBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg text-sm">
+                        Hapus Semua Data
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Security Warning Modal -->
+        <div id="securityModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <div class="text-center">
+                    <div class="text-4xl mb-4">⚠️</div>
+                    <h3 class="text-lg font-bold text-red-600 mb-2">Peringatan Terakhir!</h3>
+                    <p class="text-gray-700 mb-4">Ini adalah peringatan terakhir! Jika Anda keluar lagi dari aplikasi, Anda akan dikeluarkan dari ujian dan tidak dapat mengikuti ujian lagi.</p>
+                    <button id="stayBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg">
+                        Tetap di Ujian
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Violation Modal -->
+        <div id="violationModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div class="bg-white rounded-lg p-6 max-w-sm w-full">
+                <div class="text-center">
+                    <div class="text-4xl mb-4">🚫</div>
+                    <h3 class="text-lg font-bold text-red-600 mb-2">Anda Telah Dikeluarkan!</h3>
+                    <p class="text-gray-700 mb-4">Anda telah melanggar aturan ujian dengan keluar dari aplikasi. Anda tidak dapat mengikuti ujian lagi.</p>
+                    <button id="exitBtn" class="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg">
+                        Keluar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-gray-200 py-3">
+        <div class="text-center">
+            <p class="text-xs text-gray-500">Dikembangkan oleh : TIM SMANJA</p>
+        </div>
+    </footer>
+
+    <script>
+        // State management
+        let currentUser = null;
+        let examStartTime = null;
+        let examDuration = 90 * 60; // 90 minutes in seconds
+        let timerInterval = null;
+        let isExamActive = false;
+
+        // Student activity tracking
+        let studentActivity = JSON.parse(localStorage.getItem('studentActivity')) || [];
+        
+        // Violation tracking
+        let bannedStudents = JSON.parse(localStorage.getItem('bannedStudents')) || [];
+
+        // Page elements
+        const pages = {
+            login: document.getElementById('loginPage'),
+            main: document.getElementById('mainPage'),
+            exam: document.getElementById('examPage'),
+            admin: document.getElementById('adminPage')
+        };
+
+        // Student data from spreadsheet
+        const studentData = [
+			{ name:	"ADE IRMA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"AJENG DWI PUTERI PANGESTU",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ALFARIZI MULKY AHMAD",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ALMA SERINA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"AMEILIA MIA AUDINA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ANDRI SYAHTRIAN",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ARIS MUNANDAR",	class:	"XII-1",	password:	"2026" },
+			{ name:	"BUNGA DELISTA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"DIFA SAPUTRA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"FIRLAN RISTANDI MANUSAMA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"FURWA SABILLA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ITA AMELIA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"KRIES WANDA JULIAN PRATAMA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MUHAMAD ALVIAN MAULANA YUSUF",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MUHAMAD DIMAS ADITYA SETIAWAN",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MUHAMAD MIS'AL",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MUHAMAD RAEHAN",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MUHAMMAD BENTAR JUNIOR AL AZIZ",	class:	"XII-1",	password:	"2026" },
+			{ name:	"MULIA RAMADHANI",	class:	"XII-1",	password:	"2026" },
+			{ name:	"PARIJ PADILAH",	class:	"XII-1",	password:	"2026" },
+			{ name:	"RAHMAN HIDAYATULLAH",	class:	"XII-1",	password:	"2026" },
+			{ name:	"RATU AQILA FIRDAUS",	class:	"XII-1",	password:	"2026" },
+			{ name:	"RENDY ALFIANSYAH",	class:	"XII-1",	password:	"2026" },
+			{ name:	"RIZAL ALFASMI",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ROMI ADITIYA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"SAL SABILA NADHIFAH",	class:	"XII-1",	password:	"2026" },
+			{ name:	"SALMA ANINDITA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"UHIN HIDAYAT",	class:	"XII-1",	password:	"2026" },
+			{ name:	"VIANDRA DEANISA AGUSTIN",	class:	"XII-1",	password:	"2026" },
+			{ name:	"WARNA WIGUNA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"WIWI ANGGRAENI",	class:	"XII-1",	password:	"2026" },
+			{ name:	"YUDISTIRA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"YUSUF TIRTA NUGROHO",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ZAHRATUNNASYITA",	class:	"XII-1",	password:	"2026" },
+			{ name:	"ADIL SETIAWAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ADRIAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"AGUS RUKMANA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"AHMAD FAUZAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"AHMAD ZULFIKRI SALEH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"AHYA LUTHFIA ZAHRAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ALDO SEPTIANTINO",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ALIEFATUL ZAHRA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ALISA NURFA AULIA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"AMELIATUL HOERIAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ANISA DEVINA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ANISA LEONI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ARINI RINDU PURNAMA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"BUNGA MERSILIA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ELFIRA BELA PUTRIYANSYAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"FELIA DEWI AGUSTIN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"IRAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"KEYSA NIHA HIBATUL HAQ",	class:	"XII-2",	password:	"2026" },
+			{ name:	"LISA FEYKER LIOU",	class:	"XII-2",	password:	"2026" },
+			{ name:	"M.ARIF RAHMAN SAPUTRA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMAD KHOIRUL AWAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMAD WIJDAN SYARIF WIJAYA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMMAD DAFFA AZIZ AL QAHTANI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMMAD RAMZI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMMAD RISALDI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMMAD SOLEHUDIN RAMADHAN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUHAMMAD WENDI THAHIR TRI CAHYA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"MUNITA ARIANTI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"NADIA SOFWATUR ROZBIAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"RAIHAN PRAMANA",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SABRINA AULIA PUTRI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SELPI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SINDI AULIA JULIANTI",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SITI AMELIA FAUJIAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SITI NUR DUROTU ROHMAH",	class:	"XII-2",	password:	"2026" },
+			{ name:	"SRI HOMSAH AGUSTIN",	class:	"XII-2",	password:	"2026" },
+			{ name:	"ABDUL LATIF",	class:	"XII-3",	password:	"2026" },
+			{ name:	"ADI SURYA SAPUTRA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"ALSA DIANTI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"APRILIA LIDYA AFANDI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"ECIH FEBRIYANTI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"EKA PRISA AMANDA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"ERNI RAHAYU",	class:	"XII-3",	password:	"2026" },
+			{ name:	"FAJAR FADILAH",	class:	"XII-3",	password:	"2026" },
+			{ name:	"FATHIR TSABIT AUFA NURROHIM",	class:	"XII-3",	password:	"2026" },
+			{ name:	"FIRGY SAPUTRA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"GALIH SATIA PAMUNGKAS",	class:	"XII-3",	password:	"2026" },
+			{ name:	"HASNA HAYA ZAQIA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"INDIKA FAHDISAMLI PERKASA BUANA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"LAYUNG WIJAYA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MARSYA SALSABILA MUIZ",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MEILANI SAEPUTRI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MUHAMAD PUTRA PRATAMA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MUHAMAD WISNU AL MUCHLIS",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MUHAMAD ZULFAHRI ALFIAN",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MUHAMMAD ZIBRAN SUDRAJAT",	class:	"XII-3",	password:	"2026" },
+			{ name:	"MUNICA PUTRI JANUARY",	class:	"XII-3",	password:	"2026" },
+			{ name:	"NAZLA PUTRI RAHMAWATI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"NENG DENIAH PUTRI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"NISRYNA GIFA UTAMI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"NUR FATIHA AINUN NAZWA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"RANA WINATA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"RESTU RAMDANIA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"REZA PUTRA PIRDAUS",	class:	"XII-3",	password:	"2026" },
+			{ name:	"RIANTI NURAMALIA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"RISMA YANTI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"SELVI",	class:	"XII-3",	password:	"2026" },
+			{ name:	"SILVI APRILIA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"SITI MUTIA ZAHRA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"SITI REZA ZAHARA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"SITI ZAHROTUN MASKINAYAH",	class:	"XII-3",	password:	"2026" },
+			{ name:	"YULITA",	class:	"XII-3",	password:	"2026" },
+			{ name:	"ANDRE DWI NUR WAHYONO",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ASILIYA ALBI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"DELIA ADEA FITRI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"DEWI MULYANI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"DWISA TANAYA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ELIA SARI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ERLITA PUTRI DESANTIKA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"FAIQ SURYA AFIYAS",	class:	"XII-4",	password:	"2026" },
+			{ name:	"HERMI KHAERUNISA MULYONO PUTRI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"INKA MAHARANI ZELAICA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"JULIANI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"KAHYILA AGNYA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"KEYSYA AUDI NATASYA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"LINGGA ANGIN ARUNDAYA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD ABDUL PAHAZ",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD ADRYAN MAULANA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD AFGAN PUTRA PRAYOGI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD BALQIS ABIEZA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD RIBKI ISKANDAR HIKMAT",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMAD ZIBRIL RIZKI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMMAD FAHREZI AWALUDIN",	class:	"XII-4",	password:	"2026" },
+			{ name:	"MUHAMMAD ZAKARIYA ANSHORI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"PUTRI AMALIA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"QOBUS ROBANI RAMADHAN",	class:	"XII-4",	password:	"2026" },
+			{ name:	"RIZAL MAULANA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ROY TEGAR AGUSTIAN",	class:	"XII-4",	password:	"2026" },
+			{ name:	"SITI JAMIL NUR ASSIFA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"SITI SOPIAH",	class:	"XII-4",	password:	"2026" },
+			{ name:	"SUHAILI SAHLAN",	class:	"XII-4",	password:	"2026" },
+			{ name:	"TB.MUHAMMAD SULTAN HASANUDIN",	class:	"XII-4",	password:	"2026" },
+			{ name:	"TIARA RENATA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"YULIA AMANDA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ZAHRA TRI RAHMADANI",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ZAHRATUL SITA",	class:	"XII-4",	password:	"2026" },
+			{ name:	"ABDUR ROHMAN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"ADLY SULAIMAN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"AHMAD NUR APANDI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"ALAN SAPARUDIN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"ASRI MAULANA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"CHANTIKA OCTAVIANI PUTRI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"DAVA AZZAHRAN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"DENDRA MAULANA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"DESI PUSPITA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"DIINA NUURUNNISA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"FAHRI FAHRIZI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"FARIEL AL FAZRIAL",	class:	"XII-5",	password:	"2026" },
+			{ name:	"FAWAZ FAUZAN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"GILANG KURNIAWAN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"HELMI HERLAMBANG",	class:	"XII-5",	password:	"2026" },
+			{ name:	"INTAN NOVIANI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"LAMIK METUSYALIH",	class:	"XII-5",	password:	"2026" },
+			{ name:	"MUHAMAD ALDI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"MUHAMAD ANDIKHA PRATAMA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"MUHAMAD NURDIN",	class:	"XII-5",	password:	"2026" },
+			{ name:	"MUHAMAD RAKAN AL-HARBI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"MULIA ARIBAH",	class:	"XII-5",	password:	"2026" },
+			{ name:	"NAUVAL IBNU FAJAR",	class:	"XII-5",	password:	"2026" },
+			{ name:	"NISRINA NAYLA FATIHAH",	class:	"XII-5",	password:	"2026" },
+			{ name:	"ODE HISSAN RABANI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"PURNAMASARI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"RAFFI SUPENDI PUTRA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"RANGGA ADITIA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"RANTI TRI RANINGTIAS",	class:	"XII-5",	password:	"2026" },
+			{ name:	"SAHRUL",	class:	"XII-5",	password:	"2026" },
+			{ name:	"SATRIO",	class:	"XII-5",	password:	"2026" },
+			{ name:	"SHERINA NURAINI DESTIANI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"SITI HASNA RAMADANI",	class:	"XII-5",	password:	"2026" },
+			{ name:	"SITI SADIAH",	class:	"XII-5",	password:	"2026" },
+			{ name:	"WINDI EKA ZULIA",	class:	"XII-5",	password:	"2026" },
+			{ name:	"ADIS AULYA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"AGRIN SALMA AULANI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"ALMA AVRILIANI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"AYU LATIFAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"CARIN AGRISA ASIONO",	class:	"XII-6",	password:	"2026" },
+			{ name:	"CITRA LESTARI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"DEWANTARA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"DIKA GUSTIAN MAULANA AL PANDI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"DIMAS MAHESHA PUTRA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"DIMAS MUHAMMAD NUR FALLAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"FAHRIZ FADILAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"FARIN JULYANI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"ILAL PADILAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"INDY TARWIYANTI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"IRFAN MAULANA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"KEPIN PRATAMA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MELANI NADIA PUTRI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMAD AKBAR",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMAD DENI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMAD FAHRI WIGUNA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMAD FARHAN FAUZAN",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMAD IKBAL",	class:	"XII-6",	password:	"2026" },
+			{ name:	"MUHAMMAD NUR HAIDIL ILHAM",	class:	"XII-6",	password:	"2026" },
+			{ name:	"NAYLA NUR LATIEFAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"NUGRAHA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"NURFATUNNISA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RACHEL ADELIA RACHMADANI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RAFA ALVARES",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RAMA HERMAWAN",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RATU KUSUMA MOKOAGOW",	class:	"XII-6",	password:	"2026" },
+			{ name:	"REIHAND FABIANT",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RESTIA RIKA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"RYAN FADILAH MUHAJAN WAHYUDI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"SITI ROHIMAH",	class:	"XII-6",	password:	"2026" },
+			{ name:	"ZAHRA TUSSYFA",	class:	"XII-6",	password:	"2026" },
+			{ name:	"ZIKRI MASUBHI",	class:	"XII-6",	password:	"2026" },
+			{ name:	"ANANDA WILDAN ALFATON",	class:	"XII-7",	password:	"2026" },
+			{ name:	"ANASA NUR NAJIHA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"DANDI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"DELLA RAHMAWATI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"DENIS SAPUTRA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"DIKA FIRJATULLAH",	class:	"XII-7",	password:	"2026" },
+			{ name:	"DIMAS AGUSTIAN",	class:	"XII-7",	password:	"2026" },
+			{ name:	"HAMDAN SYAH",	class:	"XII-7",	password:	"2026" },
+			{ name:	"HERMALIA FEBRIYANTI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"INGE ITSNAWATI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"JULIAWATI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"KIRANA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"LUKMAN NULHAKIM",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MAULANA FAHREZA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD ABDULAH HELMI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD ALVAN MAULANA YUSUF",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD FADLY NUGRAHA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD FAZLA AL-AZMI ASABILA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD FAZRI AFRIANDI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD PRASETYO",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMAD RAFIK",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMMAD GALIH SAPUTRA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"MUHAMMAD WENDY PUTRA ANDRIANSYAH",	class:	"XII-7",	password:	"2026" },
+			{ name:	"NANDITA BUNGA PRATAMA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"NAZRUL RAMADHAN",	class:	"XII-7",	password:	"2026" },
+			{ name:	"PUTRI PREMITA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"RAHMAWATI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"REHAN AKBAR",	class:	"XII-7",	password:	"2026" },
+			{ name:	"SAPIRA DESTI YANTI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"SITI DWI RATNA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"SITI FATIMAH",	class:	"XII-7",	password:	"2026" },
+			{ name:	"SITI KEYSA MELANI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"SITI NUR ANDHINI PRICILLIANI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"TANZYANA SAZIDA SUJANA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"VIRA SEPTIA RAMADANI",	class:	"XII-7",	password:	"2026" },
+			{ name:	"VIRAS ADRIAN PUTRA",	class:	"XII-7",	password:	"2026" },
+			{ name:	"ADE HILMAN GUSTIAR",	class:	"XII-8",	password:	"2026" },
+			{ name:	"AL FATH DJIBRIL SURYADILAGA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"ALIEF FRATAMA ADITYA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"ALISA JUNIAR",	class:	"XII-8",	password:	"2026" },
+			{ name:	"APRILIA NUR ISNA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"ARIL ARDIANSYAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"DANIEL SAPTA WALI",	class:	"XII-8",	password:	"2026" },
+			{ name:	"FRAMESTI NUR CAHYANI",	class:	"XII-8",	password:	"2026" },
+			{ name:	"KALISA NURALFA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"KAPTA NAPIKA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"M AMRULLAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MAWAZ AMANDA HERMANSYAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MELDIN NANDEA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MERRY ANISA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMAD FAISAL FIRDAUS",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMAD IHYA ULUMUDIN",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMAD LILI PARIZAL",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMAD RAFI FEBRIANA PUTRA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMAD RIZKI FITRIANSYAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMMAD AGNIL HAKIM",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMMAD ALIF ALGHIFARI",	class:	"XII-8",	password:	"2026" },
+			{ name:	"MUHAMMAD INAYAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"NENG SITI PATIMAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"PUTRA ANANDA PRATAMA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"RESY VALENTINA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"REVI ERISTIAN",	class:	"XII-8",	password:	"2026" },
+			{ name:	"RISMA NURAINI",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SABILLA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SALSA MUTIARA TRI ANJANI",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SAOQI IBNU KAMIL",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SIPA NAILATU NAJWA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SITI RIANA MUBAROKAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SUHERMAN",	class:	"XII-8",	password:	"2026" },
+			{ name:	"SUKRON MAULANA",	class:	"XII-8",	password:	"2026" },
+			{ name:	"VISKHA FELISHA ABDULLAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"ZIDAN FIRMANSYAH",	class:	"XII-8",	password:	"2026" },
+			{ name:	"AGUS SITUMORANG",	class:	"XII-9",	password:	"2026" },
+			{ name:	"AMELIA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"APDAL MAULANA MALIK",	class:	"XII-9",	password:	"2026" },
+			{ name:	"ASIH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"AURA NURUL AENI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"AZBI SAWALUDIN",	class:	"XII-9",	password:	"2026" },
+			{ name:	"AZIZAH AZZAHRA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"DICKI SYAHRIFAL",	class:	"XII-9",	password:	"2026" },
+			{ name:	"DIMAS ANDREAN",	class:	"XII-9",	password:	"2026" },
+			{ name:	"IRFAN MAULANA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"LESTARI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"LORENZO NOVIANSYAH FUTRA  JAYADIKARYA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"LUCKY PINOT FERDINAND",	class:	"XII-9",	password:	"2026" },
+			{ name:	"M ALVARIZI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"M. RIZQI RAMDANI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"MOCHAMAD RAFFI AKBAR",	class:	"XII-9",	password:	"2026" },
+			{ name:	"MUHAMAD ABDUL BASIR AL-MUKHLIS",	class:	"XII-9",	password:	"2026" },
+			{ name:	"MUHAMAD WISNU",	class:	"XII-9",	password:	"2026" },
+			{ name:	"MUHAMMAD NAZRIL ALFARIDZI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"NENG ALFIKA ISLAMIAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"PADLI PADILAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"RANIA NUR AI'NIA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"RESTI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"RIANTI APRILIA",	class:	"XII-9",	password:	"2026" },
+			{ name:	"RIFALDI AGUSTIN",	class:	"XII-9",	password:	"2026" },
+			{ name:	"RIYAN RIVANSYAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"ROBI PARLI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"SITI MASPUPAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"SITI ROSIDATUL ALAWIYAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"TANTRI RAMADANI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"TIARA AKHMELIA PUTRI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"VERA EKA PUTRI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"WIDI ZAHRAN HAWARI",	class:	"XII-9",	password:	"2026" },
+			{ name:	"YOGA AILMAN SEPTRIANSYAH",	class:	"XII-9",	password:	"2026" },
+			{ name:	"ZACKY ZAHLAN KAMARUL ZAMAN",	class:	"XII-9",	password:	"2026" },
+			{ name:	"ZASKI ALIFIA",	class:	"XII-9",	password:	"2026" },
+            { name: "SMANJA", class: "GURU", password: "2026" },
+        ];
+
+        // Admin settings (dapat diganti)
+        let adminCredentials = {
+            username: "admin",
+            password: "smanja26"
+        };
+
+        // Show specific page
+        function showPage(pageName) {
+            Object.values(pages).forEach(page => page.classList.add('hidden'));
+            pages[pageName].classList.remove('hidden');
+        }
+
+        // Track student activity
+        function trackStudentActivity(action, studentName, studentClass) {
+            const activity = {
+                id: Date.now(),
+                name: studentName,
+                class: studentClass,
+                action: action,
+                timestamp: new Date().toLocaleString('id-ID'),
+                date: new Date().toLocaleDateString('id-ID'),
+                time: new Date().toLocaleTimeString('id-ID')
+            };
+            
+            studentActivity.push(activity);
+            localStorage.setItem('studentActivity', JSON.stringify(studentActivity));
+        }
+
+        // Check if student is banned
+        function isStudentBanned(studentName, studentClass) {
+            return bannedStudents.some(banned => 
+                banned.name === studentName && banned.class === studentClass
+            );
+        }
+
+        // Ban student for violation
+        function banStudent(studentName, studentClass, reason) {
+            const bannedStudent = {
+                name: studentName,
+                class: studentClass,
+                reason: reason,
+                timestamp: new Date().toLocaleString('id-ID'),
+                date: new Date().toLocaleDateString('id-ID')
+            };
+            
+            bannedStudents.push(bannedStudent);
+            localStorage.setItem('bannedStudents', JSON.stringify(bannedStudents));
+            trackStudentActivity('Dikeluarkan dari Ujian', studentName, studentClass);
+        }
+
+        // Handle exam violation
+        function handleExamViolation() {
+            if (currentUser && isExamActive) {
+                isExamActive = false;
+                clearInterval(timerInterval);
+                window.removeEventListener('beforeunload', preventExit);
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+                
+                banStudent(currentUser.name, currentUser.class, 'Melanggar aturan ujian (keluar dari aplikasi)');
+                
+                // Show violation modal
+                document.getElementById('violationModal').classList.remove('hidden');
+            }
+        }
+
+        // Display student activity
+        function displayStudentActivity() {
+            const content = document.getElementById('activityContent');
+            
+            if (studentActivity.length === 0) {
+                content.innerHTML = '<p class="text-gray-500 text-center">Belum ada aktivitas siswa</p>';
+                return;
+            }
+
+            // Group by date
+            const groupedByDate = studentActivity.reduce((groups, activity) => {
+                const date = activity.date;
+                if (!groups[date]) {
+                    groups[date] = [];
+                }
+                groups[date].push(activity);
+                return groups;
+            }, {});
+
+            let html = '';
+            Object.keys(groupedByDate).sort().reverse().forEach(date => {
+                html += `<div class="border-b pb-3 mb-3">
+                    <h4 class="font-semibold text-blue-700 mb-2">📅 ${date}</h4>`;
+                
+                groupedByDate[date].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(activity => {
+                    const statusColor = activity.action === 'Login' ? 'text-green-600' : 
+                                      activity.action === 'Mulai Ujian' ? 'text-blue-600' : 
+                                      activity.action === 'Selesai Ujian' ? 'text-red-600' : 'text-gray-600';
+                    
+                    const statusIcon = activity.action === 'Login' ? '🔑' : 
+                                     activity.action === 'Mulai Ujian' ? '📝' : 
+                                     activity.action === 'Selesai Ujian' ? '✅' : '📋';
+                    
+                    html += `<div class="bg-gray-50 rounded-lg p-3 mb-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <p class="font-medium text-gray-800">${activity.name}</p>
+                                <p class="text-sm text-gray-600">${activity.class}</p>
+                                <p class="text-sm ${statusColor} font-medium">${statusIcon} ${activity.action}</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-xs text-gray-500">${activity.time}</p>
+                            </div>
+                        </div>
+                    </div>`;
+                });
+                
+                html += '</div>';
+            });
+
+            content.innerHTML = html;
+        }
+
+        // Display banned students
+        function displayBannedStudents() {
+            const content = document.getElementById('bannedContent');
+            
+            if (bannedStudents.length === 0) {
+                content.innerHTML = '<p class="text-gray-500 text-center">Tidak ada siswa yang dikeluarkan</p>';
+                return;
+            }
+
+            let html = '';
+            bannedStudents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(banned => {
+                html += `<div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium text-red-800">${banned.name}</p>
+                            <p class="text-sm text-red-600">${banned.class}</p>
+                            <p class="text-sm text-gray-600 mt-1">${banned.reason}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">${banned.timestamp}</p>
+                            <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mt-1">🚫 Dikeluarkan</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            content.innerHTML = html;
+        }
+
+        // Display student statistics
+        function displayStudentStatistics() {
+            const content = document.getElementById('statsContent');
+            
+            if (studentActivity.length === 0) {
+                content.innerHTML = '<p class="text-gray-500 text-center">Belum ada data aktivitas siswa</p>';
+                return;
+            }
+
+            // Calculate statistics
+            const uniqueStudents = [...new Set(studentActivity.map(a => `${a.name}-${a.class}`))];
+            const totalLogins = studentActivity.filter(a => a.action === 'Login').length;
+            const totalExamStarts = studentActivity.filter(a => a.action === 'Mulai Ujian').length;
+            const totalExamFinishes = studentActivity.filter(a => a.action === 'Selesai Ujian').length;
+
+            // Group students by completion status
+            const studentProgress = {};
+            studentActivity.forEach(activity => {
+                const key = `${activity.name}-${activity.class}`;
+                if (!studentProgress[key]) {
+                    studentProgress[key] = {
+                        name: activity.name,
+                        class: activity.class,
+                        hasLogin: false,
+                        hasStarted: false,
+                        hasFinished: false,
+                        lastActivity: activity.timestamp
+                    };
+                }
+                
+                if (activity.action === 'Login') studentProgress[key].hasLogin = true;
+                if (activity.action === 'Mulai Ujian') studentProgress[key].hasStarted = true;
+                if (activity.action === 'Selesai Ujian') studentProgress[key].hasFinished = true;
+                
+                // Update last activity
+                if (new Date(activity.timestamp) > new Date(studentProgress[key].lastActivity)) {
+                    studentProgress[key].lastActivity = activity.timestamp;
+                }
+            });
+
+            const studentsCompleted = Object.values(studentProgress).filter(s => s.hasFinished).length;
+            const studentsStarted = Object.values(studentProgress).filter(s => s.hasStarted && !s.hasFinished).length;
+            const studentsLoggedOnly = Object.values(studentProgress).filter(s => s.hasLogin && !s.hasStarted).length;
+
+            // Group by class
+            const classSummary = {};
+            Object.values(studentProgress).forEach(student => {
+                if (!classSummary[student.class]) {
+                    classSummary[student.class] = {
+                        total: 0,
+                        completed: 0,
+                        started: 0,
+                        loggedOnly: 0
+                    };
+                }
+                classSummary[student.class].total++;
+                if (student.hasFinished) classSummary[student.class].completed++;
+                else if (student.hasStarted) classSummary[student.class].started++;
+                else if (student.hasLogin) classSummary[student.class].loggedOnly++;
+            });
+
+            let html = `
+                <!-- Overall Statistics -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-blue-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-600">${uniqueStudents.length}</div>
+                        <div class="text-sm text-blue-800">Total Siswa Aktif</div>
+                    </div>
+                    <div class="bg-green-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-green-600">${studentsCompleted}</div>
+                        <div class="text-sm text-green-800">Selesai Ujian</div>
+                    </div>
+                    <div class="bg-yellow-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-yellow-600">${studentsStarted}</div>
+                        <div class="text-sm text-yellow-800">Sedang Ujian</div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-gray-600">${studentsLoggedOnly}</div>
+                        <div class="text-sm text-gray-800">Baru Login</div>
+                    </div>
+                </div>
+
+                <!-- Class Summary -->
+                <div class="mb-6">
+                    <h4 class="font-semibold text-blue-700 mb-3">📊 Ringkasan Per Kelas</h4>
+                    <div class="space-y-2">`;
+
+            Object.keys(classSummary).sort().forEach(className => {
+                const data = classSummary[className];
+                const completionRate = data.total > 0 ? Math.round((data.completed / data.total) * 100) : 0;
+                
+                html += `
+                    <div class="bg-gray-50 rounded-lg p-3">
+                        <div class="flex justify-between items-center mb-2">
+                            <span class="font-medium text-gray-800">${className}</span>
+                            <span class="text-sm text-gray-600">${completionRate}% selesai</span>
+                        </div>
+                        <div class="flex space-x-2 text-xs">
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded">✅ ${data.completed} selesai</span>
+                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded">📝 ${data.started} ujian</span>
+                            <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded">🔑 ${data.loggedOnly} login</span>
+                        </div>
+                    </div>`;
+            });
+
+            html += `
+                    </div>
+                </div>
+
+                <!-- Student List -->
+                <div>
+                    <h4 class="font-semibold text-blue-700 mb-3">👥 Daftar Siswa</h4>
+                    <div class="space-y-2 max-h-64 overflow-y-auto">`;
+
+            Object.values(studentProgress).sort((a, b) => a.name.localeCompare(b.name)).forEach(student => {
+                let statusBadge = '';
+                let statusColor = '';
+                
+                if (student.hasFinished) {
+                    statusBadge = '✅ Selesai';
+                    statusColor = 'bg-green-100 text-green-800';
+                } else if (student.hasStarted) {
+                    statusBadge = '📝 Sedang Ujian';
+                    statusColor = 'bg-yellow-100 text-yellow-800';
+                } else if (student.hasLogin) {
+                    statusBadge = '🔑 Sudah Login';
+                    statusColor = 'bg-blue-100 text-blue-800';
+                }
+
+                html += `
+                    <div class="bg-white border rounded-lg p-3">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <p class="font-medium text-gray-800">${student.name}</p>
+                                <p class="text-sm text-gray-600">${student.class}</p>
+                            </div>
+                            <div class="text-right">
+                                <span class="text-xs px-2 py-1 rounded ${statusColor}">${statusBadge}</span>
+                                <p class="text-xs text-gray-500 mt-1">${student.lastActivity}</p>
+                            </div>
+                        </div>
+                    </div>`;
+            });
+
+            html += `
+                    </div>
+                </div>`;
+
+            content.innerHTML = html;
+        }
+
+        // Display banned students
+        function displayBannedStudents() {
+            const content = document.getElementById('bannedContent');
+            
+            if (bannedStudents.length === 0) {
+                content.innerHTML = '<p class="text-gray-500 text-center">Tidak ada siswa yang dikeluarkan</p>';
+                return;
+            }
+
+            let html = '';
+            bannedStudents.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp)).forEach(banned => {
+                html += `<div class="bg-red-50 border border-red-200 rounded-lg p-4">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <p class="font-medium text-red-800">${banned.name}</p>
+                            <p class="text-sm text-red-600">${banned.class}</p>
+                            <p class="text-sm text-gray-600 mt-1">${banned.reason}</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-xs text-gray-500">${banned.timestamp}</p>
+                            <span class="inline-block bg-red-100 text-red-800 text-xs px-2 py-1 rounded mt-1">🚫 Dikeluarkan</span>
+                        </div>
+                    </div>
+                </div>`;
+            });
+
+            content.innerHTML = html;
+        }
+
+        // Format time display
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${minutes.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+
+        // Start timer
+        function startTimer() {
+            let timeLeft = examDuration;
+            
+            timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('examTimer').textContent = formatTime(timeLeft);
+                
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    finishExam();
+                }
+            }, 1000);
+        }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('studentName').value;
+            const studentClass = document.getElementById('studentClass').value;
+            const password = document.getElementById('password').value;
+
+            // Check if admin login
+            if (name.toLowerCase() === adminCredentials.username && password === adminCredentials.password) {
+                showPage('admin');
+                return;
+            }
+
+            // Validate against student data
+            const user = studentData.find(student => 
+                student.name.toLowerCase() === name.toLowerCase() && 
+                student.class === studentClass && 
+                student.password === password
+            );
+
+            if (user) {
+                // Check if student is banned
+                if (isStudentBanned(user.name, user.class)) {
+                    alert('Anda telah dikeluarkan dari ujian karena melanggar aturan. Anda tidak dapat mengikuti ujian lagi.');
+                    return;
+                }
+                
+                currentUser = user;
+                document.getElementById('welcomeText').textContent = `Halo, ${user.name} (${user.class})`;
+                trackStudentActivity('Login', user.name, user.class);
+                showPage('main');
+            } else {
+                alert('Data login tidak valid. Silakan periksa kembali nama, kelas, dan password Anda.');
+            }
+        });
+
+        // Start exam
+        document.getElementById('startExamBtn').addEventListener('click', function() {
+            isExamActive = true;
+            examStartTime = new Date();
+            if (currentUser) {
+                trackStudentActivity('Mulai Ujian', currentUser.name, currentUser.class);
+            }
+            showPage('exam');
+            startTimer();
+            document.getElementById('finishExamBtn').classList.remove('hidden');
+            
+            // Security: Prevent page navigation
+            window.addEventListener('beforeunload', preventExit);
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+        });
+
+        // Finish exam
+        function finishExam() {
+            isExamActive = false;
+            clearInterval(timerInterval);
+            window.removeEventListener('beforeunload', preventExit);
+            document.removeEventListener('visibilitychange', handleVisibilityChange);
+            
+            if (currentUser) {
+                trackStudentActivity('Selesai Ujian', currentUser.name, currentUser.class);
+            }
+            
+            alert('Ujian telah selesai. Terima kasih atas partisipasi Anda.');
+            showPage('main');
+            document.getElementById('finishExamBtn').classList.add('hidden');
+        }
+
+        // Security functions
+        let hasReceivedWarning = false;
+
+        function preventExit(e) {
+            if (isExamActive) {
+                e.preventDefault();
+                e.returnValue = '';
+                if (!hasReceivedWarning) {
+                    showSecurityWarning();
+                } else {
+                    handleExamViolation();
+                }
+                return '';
+            }
+        }
+
+        function handleVisibilityChange() {
+            if (isExamActive && document.hidden) {
+                if (!hasReceivedWarning) {
+                    showSecurityWarning();
+                } else {
+                    handleExamViolation();
+                }
+            }
+        }
+
+        function showSecurityWarning() {
+            hasReceivedWarning = true;
+            document.getElementById('securityModal').classList.remove('hidden');
+        }
+
+        // Event listeners
+        document.getElementById('submitExamBtn').addEventListener('click', finishExam);
+        document.getElementById('finishExamBtn').addEventListener('click', finishExam);
+
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (isExamActive) {
+                showSecurityWarning();
+            } else {
+                currentUser = null;
+                showPage('login');
+            }
+        });
+
+        // Admin login functionality
+        document.getElementById('adminBtn').addEventListener('click', function() {
+            document.getElementById('adminLoginModal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancelAdminLoginBtn').addEventListener('click', function() {
+            document.getElementById('adminLoginModal').classList.add('hidden');
+            document.getElementById('adminLoginForm').reset();
+        });
+
+        document.getElementById('adminLoginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('adminUsername').value;
+            const password = document.getElementById('adminPassword').value;
+
+            if (username === adminCredentials.username && password === adminCredentials.password) {
+                document.getElementById('adminLoginModal').classList.add('hidden');
+                document.getElementById('adminLoginForm').reset();
+                showPage('admin');
+            } else {
+                alert('Username atau password admin salah!');
+            }
+        });
+
+
+
+        document.getElementById('backToLoginBtn').addEventListener('click', function() {
+            showPage('login');
+        });
+
+        document.getElementById('stayBtn').addEventListener('click', function() {
+            document.getElementById('securityModal').classList.add('hidden');
+        });
+
+        document.getElementById('exitBtn').addEventListener('click', function() {
+            document.getElementById('violationModal').classList.add('hidden');
+            currentUser = null;
+            hasReceivedWarning = false;
+            showPage('login');
+        });
+
+        // Student activity modal
+        document.getElementById('viewStudentActivityBtn').addEventListener('click', function() {
+            displayStudentActivity();
+            document.getElementById('studentActivityModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeActivityBtn').addEventListener('click', function() {
+            document.getElementById('studentActivityModal').classList.add('hidden');
+        });
+
+        document.getElementById('clearActivityBtn').addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data aktivitas siswa?')) {
+                studentActivity = [];
+                localStorage.removeItem('studentActivity');
+                displayStudentActivity();
+                alert('Data aktivitas siswa berhasil dihapus!');
+            }
+        });
+
+        // Student statistics modal
+        document.getElementById('viewStudentStatsBtn').addEventListener('click', function() {
+            displayStudentStatistics();
+            document.getElementById('studentStatsModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeStatsBtn').addEventListener('click', function() {
+            document.getElementById('studentStatsModal').classList.add('hidden');
+        });
+
+        // Banned students modal
+        document.getElementById('viewBannedStudentsBtn').addEventListener('click', function() {
+            displayBannedStudents();
+            document.getElementById('bannedStudentsModal').classList.remove('hidden');
+        });
+
+        document.getElementById('closeBannedBtn').addEventListener('click', function() {
+            document.getElementById('bannedStudentsModal').classList.add('hidden');
+        });
+
+        document.getElementById('clearBannedBtn').addEventListener('click', function() {
+            if (confirm('Apakah Anda yakin ingin menghapus semua data siswa yang dikeluarkan? Siswa akan dapat mengikuti ujian lagi.')) {
+                bannedStudents = [];
+                localStorage.removeItem('bannedStudents');
+                displayBannedStudents();
+                alert('Data siswa yang dikeluarkan berhasil dihapus!');
+            }
+        });
+
+        // Admin panel buttons
+        document.getElementById('viewResultsBtn').addEventListener('click', function() {
+            window.open('https://docs.google.com/spreadsheets/d/1Y9e2hO0vWxV5WqyEv7MtCCjuvo2Pi71lhFqS5Iv8EhA/edit?usp=sharing', '_blank', 'noopener,noreferrer');
+        });
+
+        document.getElementById('editQuestionsBtn').addEventListener('click', function() {
+            window.open('https://docs.google.com/forms/d/e/1FAIpQLSeeVlpj6qIQRC6RWv1T_Dk1anFU1TSxAR5AgrwgfNTu7aaiUw/edit', '_blank', 'noopener,noreferrer');
+        });
+
+        document.getElementById('editStudentsBtn').addEventListener('click', function() {
+            window.open('https://docs.google.com/spreadsheets/d/1Y9e2hO0vWxV5WqyEv7MtCCjuvo2Pi71lhFqS5Iv8EhA/edit?usp=sharing', '_blank', 'noopener,noreferrer');
+        });
+
+        // Change password functionality
+        document.getElementById('changePasswordBtn').addEventListener('click', function() {
+            document.getElementById('changePasswordModal').classList.remove('hidden');
+        });
+
+        document.getElementById('cancelPasswordBtn').addEventListener('click', function() {
+            document.getElementById('changePasswordModal').classList.add('hidden');
+            document.getElementById('changePasswordForm').reset();
+        });
+
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const currentPassword = document.getElementById('currentPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (currentPassword !== adminCredentials.password) {
+                alert('Password saat ini tidak benar!');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                alert('Konfirmasi password tidak cocok!');
+                return;
+            }
+
+            if (newPassword.length < 6) {
+                alert('Password baru minimal 6 karakter!');
+                return;
+            }
+
+            adminCredentials.password = newPassword;
+            alert('Password admin berhasil diubah!');
+            document.getElementById('changePasswordModal').classList.add('hidden');
+            document.getElementById('changePasswordForm').reset();
+        });
+
+        // Initialize app
+        showPage('login');
+    </script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9931403d62f92567',t:'MTc2MTIyMjY4MS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
